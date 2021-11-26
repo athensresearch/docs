@@ -52,6 +52,47 @@ The Linux release is a standalone [AppImage](https://appimage.org/) executable.
 
 3. Execute the file.
 
+### Kubernetes
+
+The helm chart can be used to install the server components for the shared graph supported by Athens v2.0.0.
+
+1. Add the helm repo (tbd) or clone the helm chart repo.
+
+   ```bash
+   git clone https://github.com/mterhar/athens-helm
+   # helm repo add https://helm.Athensresearch.org # if it gets configured
+   ```
+
+2. Create a `custom-values.yaml` file to configure your deployment. 
+
+   ```yaml
+   configEdn: "{:password \"makesomethingelsehere\"}"
+   ingress: 
+     enabled: true
+     hosts:
+     - host: athens.mydomain.tld
+       paths:
+         - path: /
+           pathType: ImplementationSpecific
+   ```
+
+   Do not enable TLS on the ingress. The client as of 2.0.0-beta.1 does not support TLS.
+
+   If you don't have an ingress controller, you can replace the ingress stanza with: 
+
+   ```yaml
+   service:
+     type: NodePort
+   ```
+
+3. Install the helm chart with the values 
+
+   ```bash
+   kubectl create ns athens
+   helm upgrade -i -n athens athens ./athens-helm -f custom-values.yaml \
+        --debug --wait --atomic --timeout=5m
+   ```
+
 ## Post-installation
 
 ### Finding where Athens stores your data
