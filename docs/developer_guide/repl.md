@@ -41,8 +41,8 @@ OS - Windows 10, MacOS Catalina v10.15.6
 Assume you already executed the commands described above in different terminal sessions and have the Athens instance running. And of course assume you installed vim-fireplace plugin too.
 
 ```
-lein dev # in one terminal, running nrepl server on port 8777
-yarn run electron . # another terminal running the Athens app itself
+yarn dev # in one terminal, running nrepl server on port 8777
+yarn client:electron # another terminal running the Athens app itself
 ```
 
 Now open any Clojure file in Vim. This will load vim-fireplace plugin and necessary commands. First, we need to connect Clojure (not Clojurescript yet) runtime;
