@@ -69,6 +69,14 @@ Start REPL:
 yarn server:repl
 ```
 
+### WIP
+
+Turn on fluree
+
+```
+yarn server:fluree
+```
+
 Start the system:
 
 ``` clojure
