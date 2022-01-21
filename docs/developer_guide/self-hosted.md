@@ -63,35 +63,56 @@ Also nREPL server is started on port 8877, unless you've modified `dev/clj/confi
 
 ### Developing Athens Self-Hosted Server
 
-Start REPL:
+This requires 3 or 4 terminals.
+
+Start Fluree ledger:
 
 ``` shell
-yarn server:repl
+yarn server:fluree
 ```
 
-Start the system:
+Start Athens server:
 
-``` clojure
-(dev)
-(start)
+``` shell
+yarn server
 ```
 
-Same way you can start the system after `cider-jack-in`.
+Start Athens client (same steps as [Running Athens Locally](running))
 
-After starting HTTP & nREPL servers are running on default ports or changes in `config.edn`.
+``` shell
+yarn dev
+```
 
-**Resetting the system**
-
-``` clojure
-(reset)
+``` shell
+yarn client:electron
 ```
 
 **Clean the Fluree DB**
 
-Stop the Self-Hosted server. [ctrl+c] if using `yarn server` or [ctrl+d] if repl.
-By default Fluree DB is stored in `./athens-data/fluree`, remove this folder,
-start the server and Bob's your unkle.
+Stop Athens server, [ctrl+c] if using `yarn server`.
 
+Stop Fluree ledger.
+
+``` shell
+yarn server:fluree:down
+```
+
+By default, Fluree ledger stores data in `./athens-data/fluree`. Clean out this folder.
+
+``` shell
+rm -rf ./athens-data/fluree/**
+```
+
+Restart Athens server and Fluree ledger.
+
+``` shell
+yarn server:fluree
+```
+
+
+``` shell
+yarn server
+```
 
 ## Docker
 
