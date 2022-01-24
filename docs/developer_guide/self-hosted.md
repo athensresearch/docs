@@ -233,7 +233,7 @@ More docker-compose docs can be found on their [docs](https://docs.docker.com/co
 
 Download the Athens docker-compose file. At the time of this writing, the latest version is `v2.0.0-beta.12`. You can find all releases [here](https://github.com/athensresearch/athens/releases).
 
-```
+```shell
 curl -L https://github.com/athensresearch/athens/releases/download/v2.0.0-beta.12/docker-compose.yml -o docker-compose.yml
 ```
 
