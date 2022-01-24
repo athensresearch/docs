@@ -191,7 +191,7 @@ Choose an instance type. Athens requires at least 4GBs of memory, a `t2.medium`.
 
 ![](/img/self-hosting/aws-instance-type.png)
 
-Update security group to allow `All Traffic`. Athens exposes port 3010.
+Update security group to allow `HTTP` traffic.
 
 ![](/img/self-hosting/aws-security-groups.jpg)
 
@@ -254,17 +254,17 @@ docker-compose up
 
 Athens should be running. Otherwise, follow the instructions at our [Docker docs](#docker) for additional help and context.
 
-From the AWS console, copy your IP address and add the Athens server port `3010`. Make sure there isn't a leading `http://` or ending `/`.
+From the AWS console, copy your IP address. Make sure there isn't a leading `http://` or ending `/`.
 
 An example URL would be:
 
 ```
-3.143.226.192:3010
+3.143.226.192
 ```
 
 Paste the URL to your Athens [Client](#client).
 
-![](/img/self-hosting/aws-join-ec2.png)
+![](/img/self-hosting/aws-join-ip.jpg)
 
 You should be connected to your Athens EC2 instance!
 
