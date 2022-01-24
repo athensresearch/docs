@@ -171,6 +171,53 @@ docker-compose up --detach
 ```
 
 
+## Amazon Web Services (AWS)
+
+Setting up Athens on AWS is fairly straightforward.
+
+Go to the EC2 Dashboard.
+
+
+![](/img/self-hosting/aws-ec2.jpg)
+Choose the first Amazon Machine Image (AMI). At the time of writing this is:
+
+```
+Amazon Linux 2 AMI (HVM) - Kernel 5.10, SSD Volume Type - ami-001089eb624938d9f
+```
+
+![](/img/self-hosting/aws-ami.jpg)
+
+Choose an instance type. Athens requires at least 4GBs of memory, a `t2.medium`.
+
+
+![](/img/self-hosting/aws-instance-type.png)
+![](/img/self-hosting/aws-security-groups.jpg)
+
+Update security group to allow `All Traffic`. Athens exposes port 3010.
+
+Press **Launch**. AWS will ask you to either create a key pair or choose an existing key to let you SSH to the EC2 instance. Choose an option and launch.
+
+
+After a minute or so, your instance should be **Running**.
+
+Go to the instance, press **Actions**, and select **Connect**.
+
+You can connect using **EC2 Instance Connect** from the AWS UI or **SSH client** via your terminal.
+
+Once you connect to your EC2 instance, you need to download `docker-compose`.
+
+curl
+
+docker permissions
+
+folder permissions
+
+restart
+
+docker-compose up
+
+
+
 ## DigitalOcean
 
 Athens the team has tested the backend beta server on DigitalOcean the most, and not as much yet on other cloud providers like AWS or GCP.
