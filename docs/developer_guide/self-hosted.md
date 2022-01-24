@@ -171,6 +171,103 @@ docker-compose up --detach
 ```
 
 
+## Amazon Web Services (AWS)
+
+Setting up Athens on AWS is fairly straightforward.
+
+Go to the EC2 Dashboard.
+
+![](/img/self-hosting/aws-ec2.jpg)
+
+Choose the first Amazon Machine Image (AMI). At the time of writing, this is:
+
+```
+Amazon Linux 2 AMI (HVM) - Kernel 5.10, SSD Volume Type - ami-001089eb624938d9f
+```
+
+![](/img/self-hosting/aws-ami.jpg)
+
+Choose an instance type. Athens requires at least 4GBs of memory, a `t2.medium`.
+
+![](/img/self-hosting/aws-instance-type.png)
+
+Update security group to allow `All Traffic`. Athens exposes port 3010.
+
+![](/img/self-hosting/aws-security-groups.jpg)
+
+Press **Launch**. AWS will ask you to either create a key pair or choose an existing key to let you SSH to the EC2 instance. Choose an option and launch.
+
+
+After a minute or so, your instance should be **Running**.
+
+Go to the instance, press **Actions**, and select **Connect**.
+
+You can connect using **EC2 Instance Connect** from the AWS UI or **SSH client** via your terminal.
+
+Once you connect to your EC2 instance, you need to install `docker` and update permissions for Linux user `ec2-user`.
+
+``` shell
+sudo yum update -y
+
+sudo yum install -y docker
+
+sudo service docker start
+
+sudo usermod -a -G docker ec2-user
+```
+
+Install `docker-compose` and give it executable permissions. You can find releases at https://github.com/docker/compose/releases. At the time of this writing, the latest release is `2.2.3`, and the AMI image has an `x86_64` architecture.
+
+```shell
+sudo curl -L "https://github.com/docker/compose/releases/download/v2.2.3/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+sudo chmod +x /usr/local/bin/docker-compose
+
+# Test the installation
+
+docker-compose --version
+
+```
+
+More docker-compose docs can be found on their [docs](https://docs.docker.com/compose/install/).
+
+Download the Athens docker-compose file. At the time of this writing, the latest version is `v2.0.0-beta.12`. You can find all releases [here](https://github.com/athensresearch/athens/releases).
+
+```shell
+curl -L https://github.com/athensresearch/athens/releases/download/v2.0.0-beta.12/docker-compose.yml -o docker-compose.yml
+```
+
+
+Create the folder where your data will be stored.
+
+```shell
+mkdir -p ./athens-data/fluree
+
+chmod -R 777 ./athens-data/fluree
+```
+
+Run `docker-compose`.
+
+```
+docker-compose up
+```
+
+Athens should be running. Otherwise, follow the instructions at our [Docker docs](#docker) for additional help and context.
+
+From the AWS console, copy your IP address and add the Athens server port `3010`. Make sure there isn't a leading `http://` or ending `/`.
+
+An example URL would be:
+
+```
+3.143.226.192:3010
+```
+
+Paste the URL to your Athens [Client](#client).
+
+![](/img/self-hosting/aws-join-ec2.png)
+
+You should be connected to your Athens EC2 instance!
+
 ## DigitalOcean
 
 Athens the team has tested the backend beta server on DigitalOcean the most, and not as much yet on other cloud providers like AWS or GCP.
