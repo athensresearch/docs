@@ -490,7 +490,7 @@ TODO: As of [date], our team graph db size is [size] with daily usage, on a team
 - Causes
   * failure to connect to fluree or total graph size
 - Workaround
-  * Run `docker-compose logs athens -f` and wait until continuous activity is being logged.
+  * (If total graph size is large) run `docker-compose logs athens -f` and wait until continuous activity stops being logged.
 
 ### Cannot connect to Athens via https
 
