@@ -128,13 +128,8 @@ Pick a [release](https://github.com/athensresearch/athens/releases) you'd like t
 ```sh
 curl -L -o docker-compose.yml https://github.com/athensresearch/athens/releases/download/v2.0.0-beta.13/docker-compose.yml
 ```
-On Linux, `fluree` fails to launch if it does not have enough permissions for the `./athens-data` folder. The current workaround for this is to manually create the data folder and give all users of the machine read and write access. This is not a long-term workaround, and we will have more constrained permissions before Athens RTC is available for general release.
 
-If you are on Mac, you can skip this workaround.
-```
-mkdir -p ./athens-data/fluree
-chmod -R 777 ./athens-data/fluree
-```
+If you are running on Linux, you have to follow the instructions at [Docker Permissions](#docker-permissions) to give the linux user sufficient permissions.
 
 Then, start Docker Compose!
 
@@ -444,4 +439,63 @@ Get the server log to local machine.
 ```
 scp root@"$REMOTE_IP":/var/lib/athens/backups/"$FILENAME" ./
 ```
+
+## Issues with Self-Hosting
+
+Here is a list of issues the Athens Core Team has encountered while self-hosting our own server since around November 2021.
+
+
+### Running out of system resources
+
+TODO: As of [date], our team graph db size is [size] with daily usage, on a team of about 4.
+- Manifests itself as a cryptic crash of one of more of the docker-compose processes.
+- Causes
+  * Server has less than 4gb memory, or database files exceed disk space.
+  * Bugs in our code that lead to excessive resource usage.
+  * [Cron job process pile up](#cron-job-process-pile-up)
+
+### Cron job process pile up
+
+- Manifests itself as multiple concurrent backup cron job processes, which would be creating multiple backups at a frequency higher than the first cron job frequency originally set.
+- Causes
+  * Running the cron job too many times
+  * [Running out of system resources](#running-out-of-system-resources)
+
+### Corrupted Fluree RAFT file
+
+- Manifests itself as a message on the Fluree docker logs about a corrupt RAFT log file
+- Causes
+  * System or process crashes
+- Workaround
+  * run `docker-compose down` to turn off processes
+  * back up `./athens-data` in a safe location
+  * remove either the last or all raft files in `./athens-data/fluree/group/` (leave the snapshot folder)
+  * run `docker-compose up` to turn back on processes
+
+### Docker permissions
+
+- Manifests itself as the fluree container failing to start, with logs about permission errors
+- Causes
+  * Caused by running docker as a sudo user on linux, leading to volumes being created with sudo permissions
+- Workaround:
+  * On Linux, `fluree` fails to launch if it does not have enough permissions for the `./athens-data` folder. The current workaround for this is to manually create the data folder and give all users of the machine read and write access. This is not a long-term workaround, and we will have more constrained permissions before Athens RTC is available for general release. Mac users can skip this workaround.
+  ```
+  mkdir -p ./athens-data/fluree
+  chmod -R 777 ./athens-data/fluree
+  ```
+
+### Unhealthy Athens Docker process
+
+- Manifests itself as the athens docker process never becoming healthy.
+- Causes
+  * failure to connect to fluree or total graph size
+- Workaround
+  * Run `docker-compose logs athens -f` and wait until continuous activity is being logged.
+
+### Cannot connect to Athens via https
+
+- Manifests itself as failure to connect from a web client hosted on a https domain, or by hosting athens behind an https domain.
+- Caused by Athens RTC not supporting https at all
+- Workaround
+  * No workaround yet, but we are working on getting certs to make this possible [link to PR].
 
