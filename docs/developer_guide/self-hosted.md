@@ -291,11 +291,6 @@ To backup your server, you need to have:
 - An [Athens repo](https://github.com/athensresearch/athens) cloned locally. We refer to this as **LC**, short for `local computer`, below.
 - A cloud server, for instance, hosted on [DigitalOcean](#digitalocean), and `ssh` access to it. We refer to this as **RS** short for `remote server`, below.
 
-## Helm Charts
-
-There is an unofficial, third-party created [Helm Charts deployment](https://github.com/mterhar/athens-helm), but we have not tested it ourselves. 
-
-
 ### Save (Backup) Your Server
 
 To backup your Athens server you need to the following steps:
@@ -444,6 +439,11 @@ Get the server log to local machine.
 ```
 scp root@"$REMOTE_IP":/var/lib/athens/backups/"$FILENAME" ./
 ```
+
+## Helm Charts
+
+There is an unofficial, third-party created [Helm Charts deployment](https://github.com/mterhar/athens-helm), but we have not tested it ourselves. 
+
 
 ## Issues with Self-Hosting
 
