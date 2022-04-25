@@ -281,6 +281,51 @@ Once your droplet has been created, open the console to ssh to the server, follo
 
 ![digital-ocean-console-and-ip-address](https://user-images.githubusercontent.com/8952138/141150925-9f8df004-faa0-4fbe-9875-c276d60c5118.jpg)
 
+## Linode (or other similar VPS)
+
+You can run Athens in a Linode VPS or dedicated server. These instructions will likely apply generally to other VPS setups.
+
+### Tested Environment
+
+* Linode 4GB shared VPS (may work on a smaller instance but not tested)
+* Follow recommended hardening steps (such as [Linode's documentation](https://www.linode.com/docs/guides/set-up-and-secure/)) as you determine appropriate
+* Debian 10
+* Nginx Proxy Manager (may work similarly with Traefik but not tested)
+
+### Install via Docker Compose
+
+SSH into your Linode server. 
+
+Confirm your **docker-compose** version by executing `docker-compose --version` from your terminal. The tested version at time of writing is 1.29.2. If your installed version of **docker-compose** is outdated, execute the following command as described in the [Docker documentation](https://docs.docker.com/compose/install/):
+
+``` bash
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+```
+You can then download the *docker-compose.yml* file for the current release or the release you would like to install. These instructions are written with the current version as 2.0.0b29. Because the tested environment is running behind Nginx Proxy Manager (which is on port 80/443), the docker-compose.yml was edited to change the external port of the Nginx container to a non-conflicting port.
+
+If you would like to create a server password, create a file named **.env** in the same location as your _docker-compose.yml_ file and add the following text:
+
+```
+CONFIG_EDN="{:password \"CHANGE_YOUR_PASSWORD_HERE\"}"
+```
+
+Alternately, you can choose to pass CONFIG_EDN as an environment variable in your _docker-compose.yml_ or add an environment variable in Portainer later and redeploy the container, but the details of this are outside the scope of this tutorial.
+
+Next, execute `docker-compose up -d` in the directory where your _docker-compose.yml_ file is located. Because of the self-tests, startup may take longer than you expect. If you receive a **docker-compose** error related to the _depends_on_ statement not being formatted as an array, your **docker-compose** version is likely out of date. If everything appears to have started correctly, confirm that all 3 containers (fluree, athens, and nginx) are running and healthy, either by confirming the containers in Portainer or by executing `docker container ls -a` in your SSH terminal.
+
+### Nginx Proxy Manager setup
+
+This section assumes that you have a domain name and have created a host A record pointed at your VPS IP address. Check the documentation for your domain name registrar for information about this setup. This documentation will use _host.domain.com_
+
+In Nginx Proxy Manager, create a host entry for _host.domain.com_ pointed at the correct IP address and the external port for the **Athens Nginx container (not the Athens container)** according to the NPM documentation. You can add an SSL certificate and require secure connections in the NPM interface. You **must** tick the entry for _Enable Websockets support_.
+
+### Testing your setup
+
+At this point, you should be able to execute `curl https://host.domain.com/health-check` in your SSH terminal and receive an "OK" status. Similarly, you should be able to visit https://host.domain.com/health-check in your browser and see a similar "OK" status. 
+
+Finally, launch the Athens app, click the databases icon in the upper left, click **+ Add Database** and Join, then enter your server details, including, for example, the _https_ protocol if you require https connections in NPM. You should now be able to connect to your self-hosted Athens instance, but if you are not, look at the container logs for Nginx and Athens. 
+
+
 ## Backup your server
 
 The backup method is currently an MVP. Please feel free to reach out on Discord or through info@athensresearch.org for help, feedback, and questions.
