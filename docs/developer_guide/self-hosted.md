@@ -126,7 +126,7 @@ At any point, if any of the services fails to launch or something seems broken, 
 Pick a [release](https://github.com/athensresearch/athens/releases) you'd like to use and download the `docker-compose.yml`. For example, for `v2.0.0-beta.13`:
 
 ```sh
-curl -L -o docker-compose.yml https://github.com/athensresearch/athens/releases/download/v2.0.0-beta.13/docker-compose.yml
+curl -L -o docker-compose.yml https://github.com/athensresearch/athens/releases/download/v2.0.0-beta.37/docker-compose.yml
 ```
 
 If you are running on Linux, you have to follow the instructions at [Docker Permissions](#docker-permissions) to give the linux user sufficient permissions.
@@ -157,7 +157,7 @@ To update your deployment, curl the new `docker-compose.yml` file and restart do
 
 ```
 # curl a new version of Athens described by docker-compose
-curl -L -o docker-compose.yml https://github.com/athensresearch/athens/releases/download/v2.0.0-beta.13/docker-compose.yml
+curl -L -o docker-compose.yml https://github.com/athensresearch/athens/releases/download/v2.0.0-beta.37/docker-compose.yml
 
 # restart docker-compose
 docker-compose down
@@ -226,10 +226,10 @@ docker-compose --version
 
 More docker-compose docs can be found on their [docs](https://docs.docker.com/compose/install/).
 
-Download the Athens docker-compose file. At the time of this writing, the latest version is `v2.0.0-beta.13`. You can find all releases [here](https://github.com/athensresearch/athens/releases).
+Download the Athens docker-compose file. At the time of this writing, the latest version is `v2.0.0-beta.37`. You can find all releases [here](https://github.com/athensresearch/athens/releases).
 
 ```shell
-curl -L https://github.com/athensresearch/athens/releases/download/v2.0.0-beta.13/docker-compose.yml -o docker-compose.yml
+curl -L https://github.com/athensresearch/athens/releases/download/v2.0.0-beta.37/docker-compose.yml -o docker-compose.yml
 ```
 
 
